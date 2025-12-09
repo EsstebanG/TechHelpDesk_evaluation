@@ -9,7 +9,7 @@ import { envValidationSchema } from './config/config.validation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 // Modulos. / Modules.
-
+import { UsersModule } from './modules/users/users.module';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -53,8 +53,8 @@ import { envValidationSchema } from './config/config.validation';
         };
       },
     }),
-
-    // UserModule,
+    
+    UsersModule,
   ],
   controllers: [],
   providers: [],
