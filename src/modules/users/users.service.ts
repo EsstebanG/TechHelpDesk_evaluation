@@ -76,4 +76,9 @@ export class UsersService {
         const user = await this.findOne(id_user);
         return await this.userRepo.remove(user);
     }
+
+    // Servicio para buscar usuario por EMAIL. / Service to search for users by EMAIL.
+    async findByEmail(email: string): Promise<User | null> {
+        return this.userRepo.findOne({ where: { email } });
+    }
 }

@@ -9,6 +9,7 @@ import { envValidationSchema } from './config/config.validation';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 // Modulos. / Modules.
+import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { ClientsModule } from './modules/clients/clients.module';
@@ -58,6 +59,8 @@ import { TicketsModule } from './modules/tickets/tickets.module';
       },
     }),
     
+    AuthModule,
+
     UsersModule,
     
     CategoriesModule,
