@@ -19,7 +19,7 @@ import { TicketsModule } from './modules/tickets/tickets.module';
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 // Middlewares.
-
+import { LoggingMiddleware } from './common/middlewares/logging.middleware';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -75,4 +75,8 @@ import { TicketsModule } from './modules/tickets/tickets.module';
   providers: [],
 })
 
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+  }
+}
