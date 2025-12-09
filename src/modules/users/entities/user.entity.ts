@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, } from 'typeorm';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -7,9 +7,14 @@ import { UserRole } from '../../../common/enums/user-role.enum';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+// Entidad base. / Base entity.
+import { BaseEntity } from '../../../shared/base.entity';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 // Entidad. / Entity.
 @Entity('users')
-export class User {
+export class User extends BaseEntity {
     @PrimaryGeneratedColumn('increment')
     id_user: number;
 
@@ -32,9 +37,4 @@ export class User {
     @Column({ default: true })
     isActive: boolean;
 
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
 }
