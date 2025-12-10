@@ -1,23 +1,26 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// Servicio. / Service.
 import { UsersService } from './users.service';
-
-// Controlador. / Controller.
 import { UsersController } from './users.controller';
-
-// Entidad. / Entity.
 import { User } from './entities/user.entity';
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - -
+import { RolesGuard } from '../auth/guard/roles.guard';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '15m' },
+    }),
+  ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [
+    UsersService,
+    RolesGuard,
+  ],
   exports: [UsersService, TypeOrmModule],
 })
 
