@@ -1,4 +1,3 @@
-// src/auth/auth.module.ts
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -17,7 +16,7 @@ import { JwtAuthGuard } from './guard/jwt-auth.guard';
     TypeOrmModule.forFeature([User]),
     UsersModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: process.env.JWT_SECRET || 'super_secret_jwt_key',
       signOptions: { expiresIn: '15m' },
     }),
   ],
@@ -25,4 +24,5 @@ import { JwtAuthGuard } from './guard/jwt-auth.guard';
   controllers: [AuthController],
   exports: [AuthService],
 })
+
 export class AuthModule {}

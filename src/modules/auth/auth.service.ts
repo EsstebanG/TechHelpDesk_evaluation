@@ -4,9 +4,11 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { UsersService } from '../users/users.service';
+
+import { User } from '../users/entities/user.entity';
+
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -51,18 +53,15 @@ export class AuthService {
 
     async login(user: User) {
         const payload = {
-            sub: user.id_user,
-            email: user.email,
-            role: user.role,
+        sub: user.id_user,
+        email: user.email,
+        role: user.role,
         };
 
-        const accessToken = this.jwtService.sign(payload, {
-            secret: process.env.JWT_SECRET as string,
-            expiresIn: '15m',
-        });
+        const accessToken = this.jwtService.sign(payload);
 
         const refreshToken = this.jwtService.sign(payload, {
-            secret: process.env.JWT_REFRESH_SECRET as string,
+            secret: process.env.JWT_REFRESH_SECRET || 'super_secret_refresh_key',
             expiresIn: '7d',
         });
 
@@ -79,7 +78,7 @@ export class AuthService {
                 email: string;
                 role: string;
             }>(refreshToken, {
-                secret: process.env.JWT_REFRESH_SECRET as string,
+                secret: process.env.JWT_REFRESH_SECRET || 'super_secret_refresh_key',
             });
 
             const user = await this.usersService.findByEmail(decoded.email);
@@ -93,10 +92,7 @@ export class AuthService {
                 role: user.role,
             };
 
-            const newAccessToken = this.jwtService.sign(payload, {
-                secret: process.env.JWT_SECRET as string,
-                expiresIn: '15m',
-            });
+            const newAccessToken = this.jwtService.sign(payload);
 
             return {
                 access_token: newAccessToken,
