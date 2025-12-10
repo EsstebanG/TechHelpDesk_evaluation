@@ -1,10 +1,25 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards, } from '@nestjs/common';
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Guard.
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Servicio. / Service.
 import { TechniciansService } from './technicians.service';
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// DTOs.
 import { CreateTechnicianDto } from './dto/create-technician.dto';
 import { UpdateTechnicianDto } from './dto/update-technician.dto';
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+@UseGuards(JwtAuthGuard)
 @Controller('technicians')
 export class TechniciansController {
   constructor(private readonly techniciansService: TechniciansService) {}

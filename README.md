@@ -52,9 +52,9 @@ This system is ideal for companies that need a portal to manage support requests
 
 4. Run the migrations (if there are none):
 
-  ```bash
+    ```bash
     npm run migration:run
-  ```
+    ```
 
 5. Run the project:
 

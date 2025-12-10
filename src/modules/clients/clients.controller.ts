@@ -1,18 +1,22 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards, } from '@nestjs/common';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Guard.
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
 // Servicio. / Service.
 import { ClientsService } from './clients.service';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// DTOs
+// DTOs.
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+@UseGuards(JwtAuthGuard)
 @Controller('clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
