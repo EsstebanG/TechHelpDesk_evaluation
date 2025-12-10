@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsOptional, IsString, MinLength, IsNotEmpty } from 'class-validator'; // <- Librería class-validator. / class-validator library.
+import {  IsEmail, IsEnum, IsOptional, IsString, MinLength, IsNotEmpty, IsBoolean } from 'class-validator';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -7,7 +7,6 @@ import { UserRole } from '../../../common/enums/user-role.enum';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-// DTO.
 export class CreateUserDto {
     @IsString()
     @MinLength(2, { message: 'You need to enter a real name...' })
@@ -23,5 +22,9 @@ export class CreateUserDto {
 
     @IsEnum(UserRole, { message: 'Role must be admin, technician or client...' })
     @IsOptional()
-    role?: UserRole; // si no entra un rol, será CLIENT por defecto. / If no role is entered, CLIENT will be the default.
+    role?: UserRole;
+
+    @IsBoolean({ message: 'isActive must be true or false...' })
+    @IsOptional()
+    isActive?: boolean;
 }

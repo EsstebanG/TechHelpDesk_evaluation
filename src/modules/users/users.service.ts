@@ -73,8 +73,19 @@ export class UsersService {
 
     // Servicio para eliminar usuario. / Service to delete user.
     async remove(id_user: number) {
-        const user = await this.findOne(id_user);
-        return await this.userRepo.remove(user);
+        const user = await this.userRepo.findOne({ where: { id_user } });
+
+        if (!user) {
+            throw new NotFoundException(`User with ID ${id_user} not found...`);
+        }   
+
+        user.isActive = false;
+
+        await this.userRepo.save(user);
+
+        return {
+            message: `User with ID ${id_user} has been deactivated`,
+        };
     }
 
     // Servicio para buscar usuario por EMAIL. / Service to search for users by EMAIL.
