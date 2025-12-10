@@ -1,43 +1,35 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, ForbiddenException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, ForbiddenException, } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
 
 import { ROLES_KEY } from '../../../common/decorators/roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector, 
-    private jwtService: JwtService
-  ) {}
+  constructor(private reflector: Reflector) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const requiredRoles = this.reflector.get<string[]>(ROLES_KEY, context.getHandler());
-    if (!requiredRoles) {
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles =
+      this.reflector.get<string[]>(ROLES_KEY, context.getHandler());
+
+    if (!requiredRoles || requiredRoles.length === 0) {
       return true;
     }
 
     const request = context.switchToHttp().getRequest();
-    const token = request.headers['authorization']?.split(' ')[1];
+    const user = request.user;
 
-    if (!token) {
-      throw new UnauthorizedException('Token not provided');
+    if (!user) {
+      throw new UnauthorizedException('User not authenticated');
     }
 
-    try {
-      const decoded: any = this.jwtService.verify(token);
-      const userRole = decoded.role;
+    const userRole = user.role;
 
-      if (!requiredRoles.includes(userRole)) {
-        throw new ForbiddenException('You do not have permission to access this resource');
-      }
-
-      return true;
-    } catch (error) {
-      throw new UnauthorizedException('Invalid or expired token');
+    if (!requiredRoles.includes(userRole)) {
+      throw new ForbiddenException(
+        'You do not have permission to access this resource',
+      );
     }
+
+    return true;
   }
 }

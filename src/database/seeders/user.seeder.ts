@@ -41,7 +41,6 @@ export async function userSeeder(dataSource: DataSource): Promise<void> {
         for (let user of users) {
             user.password = await bcrypt.hash(user.password, 10);
 
-            // Verifica si el usuario ya existe
             const existingUser = await userRepository.findOne({ where: { email: user.email } });
             if (existingUser) {
                 console.log(`⚠️ User ${user.email} already exists, skipping...`);
