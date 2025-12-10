@@ -36,7 +36,6 @@ import { LoggingMiddleware } from './common/middlewares/logging.middleware';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        // 💡 config.getOrThrow() elimina el error: "db is possibly undefined"
         const db = config.getOrThrow<{
           host: string;
           port: number;
@@ -53,7 +52,7 @@ import { LoggingMiddleware } from './common/middlewares/logging.middleware';
           password: db.password,
           database: db.name,
           autoLoadEntities: true,
-          synchronize: true,   // SOLO para desarrollo (prueba técnica)
+          synchronize: false,
           logging: true,
         };
       },
